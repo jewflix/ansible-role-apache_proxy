@@ -1,3 +1,6 @@
+# {{ ansible_managed }}
+# apache_proxy_vhosts: {{ apache_proxy_vhosts|length }}
+
 {% for vhost in apache_proxy_vhosts %}
 <VirtualHost *:443>
 
@@ -29,5 +32,7 @@
   </Location>
 
 </VirtualHost>
+{%   if not loop.last %}
 
+{%   endif %}
 {% endfor %}
