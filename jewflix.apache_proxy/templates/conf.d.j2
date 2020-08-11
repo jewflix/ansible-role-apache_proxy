@@ -1,0 +1,33 @@
+{% for vhost in apache_proxy_vhosts %}
+<VirtualHost *:443>
+
+  ServerName {{ vhost.name }}
+
+  CustomLog /var/log/httpd/{{ vhost.name }}-access_log combined
+  ErrorLog /var/log/httpd/{{ vhost.name }}-error_log
+
+  SSLEngine On
+  SSLCertificateChainFile /etc/letsencrypt/live/{{ ansible_nodename }}/chain.pem
+  SSLCertificateFile /etc/letsencrypt/live/{{ ansible_nodename }}/cert.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/{{ ansible_nodename }}/privkey.pem
+
+  ProxyPass / http://127.0.0.1:{{ vhost.port }}/
+  ProxyPassReverse / http://127.0.0.1:{{ vhost.port }}/
+
+{%   if vhost.extra_options is defined %}
+{%     for option in vhost.extra_options %}
+  {{ option }}
+{%     endfor %}
+{%   endif %}
+
+  <Location />
+    AuthType Basic
+    AuthName Proxy
+    AuthBasicProvider file
+    AuthUserFile /jewflix/apache/{{ vhost.name.split('.')[0] }}/htpasswd
+    Require valid-user
+  </Location>
+
+</VirtualHost>
+
+{% endfor %}

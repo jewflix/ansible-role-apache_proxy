@@ -1,0 +1,8 @@
+---
+- name: restart httpd
+  tags: apache_proxy
+  become: true
+  service:
+    name: httpd
+    state: restarted
+...

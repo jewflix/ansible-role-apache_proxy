@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+# apache_proxy_modules: {{ apache_proxy_modules|length }}
+
+{% for module in apache_proxy_modules %}
+LoadModule {{ module }}_module modules/mod_{{ module }}.so
+{% endfor %}

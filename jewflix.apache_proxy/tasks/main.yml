@@ -1,0 +1,33 @@
+---
+- name: Ensure apache proxy packages are present
+  tags: apache_proxy
+  become: true
+  yum:
+    name: "{{ apache_proxy_packages }}"
+    state: present
+
+- name: Overlay apache proxy configuration files
+  tags: apache_proxy
+  become: true
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart httpd
+  loop:
+    - { src: httpd.conf.j2, dest: /etc/httpd/conf/httpd.conf }
+    - { src: conf.d.j2, dest: /etc/httpd/conf.d/jewflix.conf }
+    - { src: conf.modules.d.j2, dest: /etc/httpd/conf.modules.d/00-jewflix.conf }
+  loop_control:
+    label: "{{ item.dest|basename }}"
+
+- name: Ensure httpd service is started and enabled on boot
+  tags: apache_proxy
+  become: true
+  service:
+    name: httpd
+    enabled: true
+    state: started
+...
