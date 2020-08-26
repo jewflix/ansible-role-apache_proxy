@@ -16,11 +16,5 @@ Group {{ apache_proxy_group }}
     Require all denied
 </Directory>
 
-ErrorLog "logs/error_log"
-
-LogLevel warn
-LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
-LogFormat "%h %l %u %t \"%r\" %>s %b" common
-
 Include conf.modules.d/00-jewflix.conf
 IncludeOptional conf.d/jewflix.conf

@@ -24,7 +24,6 @@ Available variables are listed below, along with default values:
       - authz_core
       - authz_user
       - headers
-      - log_config
       - mpm_worker
       - proxy
       - proxy_html

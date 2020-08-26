@@ -6,9 +6,6 @@
 
   ServerName {{ vhost.name }}
 
-  CustomLog /var/log/httpd/{{ vhost.name }}-access_log combined
-  ErrorLog /var/log/httpd/{{ vhost.name }}-error_log
-
   SSLEngine On
   SSLCertificateChainFile /etc/letsencrypt/live/{{ ansible_nodename }}/chain.pem
   SSLCertificateFile /etc/letsencrypt/live/{{ ansible_nodename }}/cert.pem
