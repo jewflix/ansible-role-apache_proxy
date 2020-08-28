@@ -16,5 +16,7 @@ Group {{ apache_proxy_group }}
     Require all denied
 </Directory>
 
+ErrorLog /dev/null
+
 Include conf.modules.d/00-jewflix.conf
 IncludeOptional conf.d/jewflix.conf
