@@ -23,6 +23,7 @@ Available variables are listed below, along with default values:
       - authn_file
       - authz_core
       - authz_user
+      - cloudflare
       - headers
       - mpm_worker
       - proxy
@@ -35,6 +36,7 @@ Available variables are listed below, along with default values:
       - xml2enc
     apache_proxy_packages:
       - httpd
+      - mod_cloudflare
       - mod_ssl
       - mod_proxy_html
     apache_proxy_server:

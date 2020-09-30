@@ -1,4 +1,40 @@
 ---
+- name: Ensure cloudflare rpm gpg key is present
+  tags: apache_proxy
+  become: true
+  rpm_key:
+    key: https://pkg.cloudflare.com/pubkey.gpg
+    state: present
+    validate_certs: yes
+
+- name: Ensure temporary cloudflare package is present
+  tags: apache_proxy
+  tempfile:
+    prefix: cloudflare.
+    state: file
+    suffix: .rpm
+  register: _cloudflare_tempfile
+
+- name: Ensure the cloudflare repository package is present
+  tags: apache_proxy
+  get_url:
+    dest: "{{ _cloudflare_tempfile.path }}"
+    force: yes
+    url: "http://pkg.cloudflare.com/cloudflare-release-latest.el{{ ansible_distribution_major_version }}.rpm"
+
+- name: Ensure the cloudflare-release package is installed
+  tags: apache_proxy
+  become: true
+  yum:
+    name: "{{ _cloudflare_tempfile.path }}"
+    state: present
+
+- name: Ensure temporary cloudflare package is absent
+  tags: apache_proxy
+  file:
+    path: "{{ _cloudflare_tempfile.path }}"
+    state: absent
+
 - name: Ensure apache proxy packages are present
   tags: apache_proxy
   become: true

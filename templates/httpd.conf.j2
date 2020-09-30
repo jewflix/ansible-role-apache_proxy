@@ -11,12 +11,13 @@ Listen {{ listen }}
 User {{ apache_proxy_user }}
 Group {{ apache_proxy_group }}
 
+DenyAllButCloudFlare
+ErrorLog /dev/null
+
 <Directory />
     AllowOverride none
     Require all denied
 </Directory>
-
-ErrorLog /dev/null
 
 Include conf.modules.d/00-jewflix.conf
 IncludeOptional conf.d/jewflix.conf
